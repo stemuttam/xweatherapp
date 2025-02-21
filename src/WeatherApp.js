@@ -1,28 +1,35 @@
 import React, { useState } from "react";
-import "./WeatherApp.css"; // For styling
+import "./WeatherApp.css"; // Ensure you have this CSS file
 
 const WeatherApp = () => {
     const [city, setCity] = useState("");
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const API_KEY = "8cb5ca6ce9354217b6562302252102"; // Replace with your API key
-    const API_URL = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`;
+    const API_KEY = "8cb5ca6ce9354217b6562302252102"; // Replace with your actual API key
 
     const fetchWeather = async () => {
-        if (!city) return alert("Please enter a city name");
+        if (!city) {
+            alert("Please enter a city name");
+            return;
+        }
+
         setLoading(true);
         setWeather(null);
+        setError(null); // Reset error before fetching
 
         try {
-            const response = await fetch(API_URL);
+            const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`);
             if (!response.ok) throw new Error("Invalid city name");
+
             const data = await response.json();
             setWeather(data);
         } catch (error) {
-            alert("Failed to fetch weather data");
+            setError("Failed to fetch weather data");
+        } finally {
+            setLoading(false); // Ensure loading state is properly updated
         }
-        setLoading(false);
     };
 
     return (
@@ -38,7 +45,8 @@ const WeatherApp = () => {
                 <button onClick={fetchWeather}>Search</button>
             </div>
 
-            {loading && <p>Loading data…</p>}
+            {loading && <p>Loading data…</p>} {/* Ensure this is always displayed when loading */}
+            {error && <p>{error}</p>}
 
             {weather && (
                 <div className="weather-cards">
