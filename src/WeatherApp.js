@@ -10,27 +10,31 @@ const WeatherApp = () => {
     const API_KEY = "8cb5ca6ce9354217b6562302252102"; // Replace with your actual API key
 
     const fetchWeather = async () => {
-        if (!city) {
-            alert("Please enter a city name");
-            return;
+    if (!city) {
+        alert("Please enter a city name");
+        return;
+    }
+
+    setLoading(true);
+    setWeather(null);
+
+    try {
+        const response = await fetch(
+            `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`
+        );
+
+        if (!response.ok) {
+            throw new Error("Invalid city name");
         }
 
-        setLoading(true);
-        setWeather(null);
-        setError(null); // Reset error before fetching
-
-        try {
-            const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`);
-            if (!response.ok) throw new Error("Invalid city name");
-
-            const data = await response.json();
-            setWeather(data);
-        } catch (error) {
-            setError("Failed to fetch weather data");
-        } finally {
-            setLoading(false); // Ensure loading state is properly updated
-        }
-    };
+        const data = await response.json();
+        setWeather(data);
+    } catch (error) {
+        alert("Failed to fetch weather data"); // ✅ Shows the required alert
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div className="weather-container">
