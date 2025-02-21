@@ -1,40 +1,39 @@
 import React, { useState } from "react";
-import "./WeatherApp.css"; // Ensure you have this CSS file
+import "./WeatherApp.css"; // Import the CSS for styling
 
 const WeatherApp = () => {
     const [city, setCity] = useState("");
     const [weather, setWeather] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
-    const API_KEY = "8cb5ca6ce9354217b6562302252102"; // Replace with your actual API key
+    const API_KEY = "8cb5ca6ce9354217b6562302252102"; // 🔥 Replace with your actual WeatherAPI key
 
     const fetchWeather = async () => {
-    if (!city) {
-        alert("Please enter a city name");
-        return;
-    }
-
-    setLoading(true);
-    setWeather(null);
-
-    try {
-        const response = await fetch(
-            `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`
-        );
-
-        if (!response.ok) {
-            throw new Error("Invalid city name");
+        if (!city) {
+            alert("Please enter a city name");
+            return;
         }
 
-        const data = await response.json();
-        setWeather(data);
-    } catch (error) {
-        alert("Failed to fetch weather data"); // ✅ Shows the required alert
-    } finally {
-        setLoading(false);
-    }
-};
+        setLoading(true);
+        setWeather(null); // Reset weather data before fetching
+
+        try {
+            const response = await fetch(
+                `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Invalid city name");
+            }
+
+            const data = await response.json();
+            setWeather(data);
+        } catch (error) {
+            alert("Failed to fetch weather data"); // ✅ Matches Cypress test case
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="weather-container">
@@ -49,8 +48,7 @@ const WeatherApp = () => {
                 <button onClick={fetchWeather}>Search</button>
             </div>
 
-            {loading && <p data-testid="loading-msg">Loading data…</p>} {/* Ensure this is always displayed when loading */}
-            {error && <p>{error}</p>}
+            {loading && <p>Loading data...</p>} {/* ✅ Matches Cypress test */}
 
             {weather && (
                 <div className="weather-cards">
