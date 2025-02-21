@@ -1,0 +1,42 @@
+.weather-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    margin-top: 50px;
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 8px;
+    width: 200px;
+    font-size: 16px;
+}
+
+button {
+    padding: 8px 15px;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.weather-cards {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.weather-card {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+    background-color: #f9f9f9;
+}
+
+p {
+    font-size: 18px;
+    font-weight: bold;
+}
