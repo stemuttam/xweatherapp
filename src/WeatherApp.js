@@ -49,7 +49,7 @@ const WeatherApp = () => {
                 <button onClick={fetchWeather}>Search</button>
             </div>
 
-            {loading && <p>Loading data…</p>} {/* Ensure this is always displayed when loading */}
+            {loading && <p data-testid="loading-msg">Loading data…</p>} {/* Ensure this is always displayed when loading */}
             {error && <p>{error}</p>}
 
             {weather && (
